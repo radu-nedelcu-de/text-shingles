@@ -11,11 +11,11 @@ class ShingledText:
             raise ValueError(u'input text is too short for specified shingle length of {}'.format(shingle_length))
 
         self.minhash = []
-        self.shingles = ngrams(split_text, shingle_length)
+        self.shingles = list(ngrams(split_text, shingle_length))
 
         for hash_seed in generate_random_seeds(minhash_size, random_seed):
             min_value = float('inf')
-            for shingle in ngrams(split_text, shingle_length):
+            for shingle in self.shingles:
                 value = mmh3.hash(' '.join(shingle), hash_seed)
                 min_value = min(min_value, value)
             self.minhash.append(min_value)
